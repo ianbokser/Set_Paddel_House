@@ -10,7 +10,6 @@ class Loginscreen extends StatelessWidget {
     TextEditingController password = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(180, 223, 71, 0.8), 
       appBar: AppBar(
@@ -44,7 +43,7 @@ class Loginscreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(height: 35,),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text("Sign In", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 40, color: Colors.black),), // Color de texto en negro
@@ -54,15 +53,15 @@ class Loginscreen extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text("Padel - Pistas profesionales indoor", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),), // Color de texto en negro
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 30,),
             Container(
               height: size.height,
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0), 
-                  topRight: Radius.circular(20.0),
+                  topLeft: Radius.circular(30.0), 
+                  topRight: Radius.circular(30.0),
                 ),
                 boxShadow: <BoxShadow> [
                   BoxShadow(
@@ -82,7 +81,7 @@ class Loginscreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         _email(email),
-                        const SizedBox(height: 15,),
+                        const SizedBox(height: 20,),
                         _password(password),
                         const SizedBox(height: 20,),
                         InkWell(
@@ -116,28 +115,9 @@ class Loginscreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  child: ElevatedButton(onPressed: (){}, 
-                    child: Row(
-                      children: [
-                        Image.network(
-                          "https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png",
-                          width: 50,
-                          height: 50,
-                        ),
-                        const Spacer(),
-                        const Text("Continue with Google"),
-                        const Spacer(),
-                        IconButton(
-                        onPressed: (){}, 
-                        icon: const Icon(
-                          Icons.arrow_forward_ios_outlined,
-                        ),
-                        ),
-                      ],
-                    )
-                  ),
-                ),
+                _googleButton(),
+                const SizedBox(height: 10,),
+                _facebookButton(),
               ],
             ),
           ),
@@ -146,6 +126,80 @@ class Loginscreen extends StatelessWidget {
     ),
   );
 }
+
+  Container _facebookButton() {
+    return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                          ), 
+                  child: Row(
+                    children: [
+                      Image.network(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/480px-Facebook_f_logo_%282019%29.svg.png",
+                        width: 40,
+                        height: 40,
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Continue with facebook",
+                        style: TextStyle(color: Colors.black),
+                        ),
+                      const Spacer(),
+                      IconButton(
+                      onPressed: (){}, 
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+  }
+
+  Container _googleButton() {
+    return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                          ), 
+                  child: Row(
+                    children: [
+                      Image.network(
+                        "https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png",
+                        width: 40,
+                        height: 40,
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Continue with Google",
+                        style: TextStyle(color: Colors.black),
+                        ),
+                      const Spacer(),
+                      IconButton(
+                      onPressed: (){}, 
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+  }
 
   TextFormField _password(TextEditingController val) {
     return TextFormField(
@@ -169,7 +223,7 @@ class Loginscreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
       ),
       filled: true,
-      fillColor: const Color.fromARGB(255, 192, 192, 192)
+      fillColor: Colors.white60
     ),
   );
   }
@@ -197,7 +251,7 @@ class Loginscreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
       ),
       filled: true,
-      fillColor: const Color.fromARGB(255, 192, 192, 192)
+      fillColor: Colors.white60
     ),
   );
 }
