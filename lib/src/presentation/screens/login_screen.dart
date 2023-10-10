@@ -6,6 +6,9 @@ class Loginscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -71,15 +74,16 @@ class Loginscreen extends StatelessWidget {
               child: Column(
                 children: [
                   Form(
+                    key: _formKey,
                     child: Padding(
                     padding: 
                     EdgeInsets.symmetric(vertical: size.height * 0.1, horizontal: size.width * 0.02),
                     child:  Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const _TextFormFile(Text: 'Username',),
+                        _email(email),
                         const SizedBox(height: 15,),
-                        const _TextFormFile(Text: 'Password',),
+                        _password(password),
                         const SizedBox(height: 20,),
                         InkWell(
                           onTap:() { 
@@ -94,7 +98,13 @@ class Loginscreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           height: 55,
                           width: double.infinity,
-                          child: ElevatedButton(onPressed: () {},
+                          child: ElevatedButton(onPressed: () {
+                            if (_formKey.currentState!.validate()){ 
+                              print("INICIO DE SESION EXITOSO");
+                              print(email.text);
+                              print(password.text);
+                            }
+                          },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
@@ -104,43 +114,90 @@ class Loginscreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ))
-                ],
-              ),
+                  ),
+                ),
+                SizedBox(
+                  child: ElevatedButton(onPressed: (){}, 
+                    child: Row(
+                      children: [
+                        Image.network(
+                          "https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png",
+                          width: 50,
+                          height: 50,
+                        ),
+                        const Spacer(),
+                        const Text("Continue with Google"),
+                        const Spacer(),
+                        IconButton(
+                        onPressed: (){}, 
+                        icon: const Icon(
+                          Icons.arrow_forward_ios_outlined,
+                        ),
+                        ),
+                      ],
+                    )
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
+}
+
+  TextFormField _password(TextEditingController val) {
+    return TextFormField(
+      controller: val,
+    validator: (value) {
+      if (value!.isEmpty) {
+        return "este campo es obligatorio";
+      }
+    },
+    decoration: InputDecoration(
+      hintText: "Password",
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+        borderSide: BorderSide.none
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+        borderSide: BorderSide.none
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+      ),
+      filled: true,
+      fillColor: const Color.fromARGB(255, 192, 192, 192)
+    ),
+  );
   }
 }
 
-class _TextFormFile extends StatelessWidget {
-  final String Text;
-  const _TextFormFile({
-    super.key,
-    required this.Text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  TextFormField _email(TextEditingController val) {
     return TextFormField(
-      decoration: InputDecoration(
-        hintText: Text,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40),
-          borderSide: BorderSide.none
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40),
-          borderSide: BorderSide.none
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 192, 192, 192)
+      controller: val,
+    validator: (value) {
+      if (value!.isEmpty) {
+        return "este campo es obligatorio";
+      }
+    },
+    decoration: InputDecoration(
+      hintText: "Username",
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+        borderSide: BorderSide.none
       ),
-    );
-  }
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+        borderSide: BorderSide.none
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(40),
+      ),
+      filled: true,
+      fillColor: const Color.fromARGB(255, 192, 192, 192)
+    ),
+  );
 }
