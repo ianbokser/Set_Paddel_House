@@ -1,19 +1,45 @@
-
 import 'package:flutter/material.dart';
 
-class Loginscreen extends StatelessWidget {
+class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
 
   @override
+  _LoginscreenState createState() => _LoginscreenState();
+}
+
+class _LoginscreenState extends State<Loginscreen> with SingleTickerProviderStateMixin {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1 ),
+      vsync: this,
+    )..forward();
+    
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController email = TextEditingController();
-    TextEditingController password = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color.fromRGBO(180, 223, 71, 0.8), 
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(180, 223, 71, 0.8),//const Color.fromARGB(204, 8, 101, 188),
+        backgroundColor: const Color.fromRGBO(180, 223, 71, 0.8),
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -54,78 +80,87 @@ class Loginscreen extends StatelessWidget {
               child: Text("Padel - Pistas profesionales indoor", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),), // Color de texto en negro
             ),
             const SizedBox(height: 30,),
-            Container(
-              height: size.height,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0), 
-                  topRight: Radius.circular(30.0),
+            SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                height: size.height,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0), 
+                    topRight: Radius.circular(30.0),
+                  ),
+                  boxShadow: <BoxShadow> [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                    )
+                  ]
                 ),
-                boxShadow: <BoxShadow> [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                  )
-                ]
-              ),
-              child: Column(
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                    padding: 
-                    EdgeInsets.symmetric(vertical: size.height * 0.1, horizontal: size.width * 0.02),
-                    child:  Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        _email(email),
-                        const SizedBox(height: 20,),
-                        _password(password),
-                        const SizedBox(height: 20,),
-                        InkWell(
-                          onTap:() { 
-
-                          }, 
-                          child: const Text("Forgot Password?", 
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 80,),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          height: 55,
-                          width: double.infinity,
-                          child: ElevatedButton(onPressed: () {
-                            if (_formKey.currentState!.validate()){ 
-                              print("INICIO DE SESION EXITOSO");
-                              print(email.text);
-                              print(password.text);
-                            }
-                          },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                child: Column(
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                      padding: 
+                      EdgeInsets.symmetric(vertical: size.height * 0.1, horizontal: size.width * 0.02),
+                      child:  Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _email(email),
+                          const SizedBox(height: 20,),
+                          _password(password),
+                          const SizedBox(height: 20,),
+                          InkWell(
+                            onTap:() { 
+                            }, 
+                            child: const Text("Forgot Password?", 
+                            style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            child: const Text("Sign In",style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 80,),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            height: 55,
+                            width: double.infinity,
+                            child: ElevatedButton(onPressed: () {
+                              if (_formKey.currentState!.validate()){ 
+                                print("INICIO DE SESION EXITOSO");
+                                print(email.text);
+                                print(password.text);
+                              }
+                            },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                              ),
+                              child: const Text("Sign In",style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                _googleButton(),
-                const SizedBox(height: 10,),
-                _facebookButton(),
-              ],
+                  _googleButton(),
+                  const SizedBox(height: 10,),
+                  _facebookButton(),
+                ],
+              ),
             ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
 
   Container _facebookButton() {
     return Container(
@@ -208,6 +243,7 @@ class Loginscreen extends StatelessWidget {
       if (value!.isEmpty) {
         return "este campo es obligatorio";
       }
+      return null;
     },
     decoration: InputDecoration(
       hintText: "Password",
@@ -236,6 +272,7 @@ class Loginscreen extends StatelessWidget {
       if (value!.isEmpty) {
         return "este campo es obligatorio";
       }
+      return null;
     },
     decoration: InputDecoration(
       hintText: "Username",
